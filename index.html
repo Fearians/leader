@@ -3,140 +3,37 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<script>
+(function(){
+  var m = document.querySelector('meta[name="viewport"]');
+  if(!m){ m = document.createElement('meta'); m.name = 'viewport'; document.head.appendChild(m); }
+  m.setAttribute('content','width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');
+})();
+</script>
 <title>耀州瓷智能导览助手</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
-:root{
-  --celadon-main:#2D5A4A;
-  --celadon-light:#7BA89A;
-  --celadon-pale:#D4E4DE;
-  --bg-paper:#F7F5EF;
-  --text-dark:#2C2822;
-  --text-soft:#635C52;
-}
-html,body{
-  height:100%;
-  font-family:"Noto Sans SC",system-ui,sans-serif;
-  background:var(--bg-paper);
-  color:var(--text-dark);
-  overflow-x:hidden;
-}
-.wrapper{
-  max-width:720px;
-  margin:0 auto;
-  height:100vh;
-  display:flex;
-  flex-direction:column;
-}
-.header{
-  background:var(--celadon-main);
-  color:#fff;
-  padding:16px 20px;
-  text-align:center;
-  flex-shrink:0;
-}
-.header h1{
-  font-size:18px;
-  font-weight:600;
-  letter-spacing:2px;
-}
-.header p{
-  font-size:12px;
-  opacity:0.8;
-  margin-top:4px;
-}
-.chat-box{
-  flex:1;
-  padding:16px;
-  overflow-y:auto;
-}
-.msg{
-  margin-bottom:18px;
-  display:flex;
-}
-.msg-bot{
-  justify-content:flex-start;
-}
-.msg-user{
-  justify-content:flex-end;
-}
-.bubble-bot{
-  max-width:80%;
-  background:#fff;
-  border-radius:14px 14px 14px 4px;
-  padding:12px 14px;
-  box-shadow:0 1px 4px rgba(45,90,74,0.12);
-  font-size:15px;
-  line-height:1.6;
-  color:var(--text-dark);
-}
-.bubble-user{
-  max-width:80%;
-  background:var(--celadon-light);
-  color:#fff;
-  border-radius:14px 14px 4px 14px;
-  padding:12px 14px;
-  font-size:15px;
-  line-height:1.6;
-}
-.quick-title{
-  font-size:13px;
-  color:var(--text-soft);
-  margin:10px 0 8px;
-}
-.quick-wrap{
-  display:flex;
-  flex-wrap:wrap;
-  gap:8px;
-  margin-bottom:16px;
-}
-.quick-btn{
-  border:1px solid var(--celadon-light);
-  color:var(--celadon-main);
-  background:#fff;
-  border-radius:20px;
-  padding:6px 12px;
-  font-size:13px;
-  white-space:nowrap;
-  cursor:pointer;
-}
-.quick-btn:active{
-  background:var(--celadon-pale);
-}
-.input-area{
-  padding:12px 16px 22px;
-  background:#fff;
-  border-top:1px solid var(--celadon-pale);
-  flex-shrink:0;
-}
-.row-input{
-  display:flex;
-  gap:10px;
-  align-items:center;
-}
-#userInput{
-  flex:1;
-  border:1px solid #ccc;
-  border-radius:24px;
-  padding:11px 16px;
-  font-size:16px;
-  outline:none;
-}
-#sendBtn{
-  background:var(--celadon-main);
-  color:#fff;
-  border:none;
-  border-radius:24px;
-  padding:11px 18px;
-  font-size:15px;
-  cursor:pointer;
-}
-.tip-note{
-  font-size:11px;
-  color:#999;
-  margin-top:8px;
-  text-align:center;
-}
+:root{--celadon-main:#2D5A4A;--celadon-light:#7BA89A;--celadon-pale:#D4E4DE;--bg-paper:#F7F5EF;--text-dark:#2C2822;--text-soft:#635C52;}
+html,body{height:100%;font-family:"Noto Sans SC",system-ui,sans-serif;background:var(--bg-paper);color:var(--text-dark);overflow-x:hidden;}
+.wrapper{max-width:720px;margin:0 auto;height:100vh;display:flex;flex-direction:column;}
+.header{background:var(--celadon-main);color:#fff;padding:16px 20px;text-align:center;flex-shrink:0;}
+.header h1{font-size:18px;font-weight:600;letter-spacing:2px;}
+.header p{font-size:12px;opacity:0.8;margin-top:4px;}
+.chat-box{flex:1;padding:16px;overflow-y:auto;}
+.msg{margin-bottom:18px;display:flex;}
+.msg-bot{justify-content:flex-start;}
+.msg-user{justify-content:flex-end;}
+.bubble-bot{max-width:80%;background:#fff;border-radius:14px 14px 14px 4px;padding:12px 14px;box-shadow:0 1px 4px rgba(45,90,74,0.12);font-size:15px;line-height:1.6;color:var(--text-dark);}
+.bubble-user{max-width:80%;background:var(--celadon-light);color:#fff;border-radius:14px 14px 4px 14px;padding:12px 14px;font-size:15px;line-height:1.6;}
+.quick-title{font-size:13px;color:var(--text-soft);margin:10px 0 8px;}
+.quick-wrap{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;}
+.quick-btn{border:1px solid var(--celadon-light);color:var(--celadon-main);background:#fff;border-radius:20px;padding:6px 12px;font-size:13px;white-space:nowrap;cursor:pointer;}
+.quick-btn:active{background:var(--celadon-pale);}
+.input-area{padding:12px 16px 22px;background:#fff;border-top:1px solid var(--celadon-pale);flex-shrink:0;}
+.row-input{display:flex;gap:10px;align-items:center;}
+#userInput{flex:1;border:1px solid #ccc;border-radius:24px;padding:11px 16px;font-size:16px;outline:none;}
+#sendBtn{background:var(--celadon-main);color:#fff;border:none;border-radius:24px;padding:11px 18px;font-size:15px;cursor:pointer;}
+.tip-note{font-size:11px;color:#999;margin-top:8px;text-align:center;}
 </style>
 </head>
 <body>
@@ -147,13 +44,10 @@ html,body{
   </div>
   <div class="chat-box" id="chatBox">
     <div class="msg msg-bot">
-      <div class="bubble-bot">
-        您好！欢迎来到耀州瓷数字展厅👋。我是智能导览讲解员，您可以提问耀州瓷相关知识，也可以点击下方快捷问题快速了解。
-      </div>
+      <div class="bubble-bot">您好！欢迎来到耀州瓷数字展厅👋。我是智能导览讲解员，您可以提问耀州瓷相关知识，也可以点击下方快捷问题快速了解。</div>
     </div>
     <div class="quick-title">📌 点击快速提问</div>
-    <div class="quick-wrap" id="quickWrap">
-    </div>
+    <div class="quick-wrap" id="quickWrap"></div>
   </div>
   <div class="input-area">
     <div class="row-input">
@@ -199,50 +93,12 @@ const chatBox = document.getElementById('chatBox');
 const quickWrap = document.getElementById('quickWrap');
 const userInput = document.getElementById('userInput');
 const sendBtn = document.getElementById('sendBtn');
-quickQuestions.forEach(q=>{
-  const btn = document.createElement('button');
-  btn.className = 'quick-btn';
-  btn.innerText = q;
-  btn.onclick = ()=>sendQuestion(q);
-  quickWrap.appendChild(btn);
-})
-function addMessage(text,isUser){
-  const div = document.createElement('div');
-  div.className = 'msg '+(isUser?'msg-user':'msg-bot');
-  const bubble = document.createElement('div');
-  bubble.className = isUser?'bubble-user':'bubble-bot';
-  bubble.innerText = text;
-  div.appendChild(bubble);
-  chatBox.appendChild(div);
-  chatBox.scrollTop = chatBox.scrollHeight;
-}
-function getAnswer(question){
-  const q = question.trim();
-  for(let item of qaLib){
-    if(q.includes(item.q)){
-      return item.a;
-    }
-  }
-  return "感谢提问，这个问题超出我的知识库。您可以试试问：耀州窑在哪里？刻花工艺是什么？梅瓶是干什么的等问题。";
-}
-function sendQuestion(text){
-  if(!text.trim()) return;
-  addMessage(text,true);
-  setTimeout(()=>{
-    const ans = getAnswer(text);
-    addMessage(ans,false);
-  },450);
-}
-sendBtn.onclick = ()=>{
-  sendQuestion(userInput.value);
-  userInput.value = '';
-}
-userInput.addEventListener('keydown',e=>{
-  if(e.key === 'Enter'){
-    sendQuestion(userInput.value);
-    userInput.value='';
-  }
-})
+quickQuestions.forEach(q=>{const btn=document.createElement('button');btn.className='quick-btn';btn.innerText=q;btn.onclick=()=>sendQuestion(q);quickWrap.appendChild(btn);});
+function addMessage(text,isUser){const div=document.createElement('div');div.className='msg '+(isUser?'msg-user':'msg-bot');const bubble=document.createElement('div');bubble.className=isUser?'bubble-user':'bubble-bot';bubble.innerText=text;div.appendChild(bubble);chatBox.appendChild(div);chatBox.scrollTop=chatBox.scrollHeight;}
+function getAnswer(question){const q=question.trim();for(let item of qaLib){if(q.includes(item.q)){return item.a;}}return "感谢提问，这个问题超出我的知识库。您可以试试问：耀州窑在哪里？刻花工艺是什么？梅瓶是干什么的等问题。";}
+function sendQuestion(text){if(!text.trim())return;addMessage(text,true);setTimeout(()=>{const ans=getAnswer(text);addMessage(ans,false);},450);}
+sendBtn.onclick=()=>{sendQuestion(userInput.value);userInput.value='';};
+userInput.addEventListener('keydown',e=>{if(e.key==='Enter'){sendQuestion(userInput.value);userInput.value='';}});
 </script>
 </body>
 </html>
