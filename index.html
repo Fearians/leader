@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="zh‑CN">
+<head>
+<meta charset="UTF‑8">
+<meta name="viewport" content="width=device‑width, initial‑scale=1.0, maximum‑scale=1.0, user‑scalable=no">
+<title>耀州瓷智能导览助手</title>
+<style>
+*{margin:0;padding:0;box‑sizing:border‑box;}
+:root{
+  --celadon‑main:#2D5A4A;
+  --celadon‑light:#7BA89A;
+  --celadon‑pale:#D4E4DE;
+  --bg‑paper:#F7F5EF;
+  --text‑dark:#2C2822;
+  --text‑soft:#635C52;
+}
+html,body{
+  height:100%;
+  font‑family:"Noto Sans SC",system‑ui,sans‑serif;
+  background:var(--bg‑paper);
+  color:var(--text‑dark);
+  overflow‑x:hidden;
+}
+.wrapper{
+  max‑width:720px;
+  margin:0 auto;
+  height:100vh;
+  display:flex;
+  flex‑direction:column;
+}
+.header{
+  background:var(--celadon‑main);
+  color:#fff;
+  padding:16px 20px;
+  text‑align:center;
+  flex‑shrink:0;
+}
+.header h1{
+  font‑size:18px;
+  font‑weight:600;
+  letter‑spacing:2px;
+}
+.header p{
+  font‑size:12px;
+  opacity:0.8;
+  margin‑top:4px;
+}
+.chat‑box{
+  flex:1;
+  padding:16px;
+  overflow‑y:auto;
+}
+.msg{
+  margin‑bottom:18px;
+  display:flex;
+}
+.msg‑bot{
+  justify‑content:flex‑start;
+}
+.msg‑user{
+  justify‑content:flex‑end;
+}
+.bubble‑bot{
+  max‑width:80%;
+  background:#fff;
+  border‑radius:14px 14px 14px 4px;
+  padding:12px 14px;
+  box‑shadow:0 1px 4px rgba(45,90,74,0.12);
+  font‑size:15px;
+  line‑height:1.6;
+  color:var(--text‑dark);
+}
+.bubble‑user{
+  max‑width:80%;
+  background:var(--celadon‑light);
+  color:#fff;
+  border‑radius:14px 14px 4px 14px;
+  padding:12px 14px;
+  font‑size:15px;
+  line‑height:1.6;
+}
+.quick‑title{
+  font‑size:13px;
+  color:var(--text‑soft);
+  margin:10px 0 8px;
+}
+.quick‑wrap{
+  display:flex;
+  flex‑wrap:wrap;
+  gap:8px;
+  margin‑bottom:16px;
+}
+.quick‑btn{
+  border:1px solid var(--celadon‑light);
+  color:var(--celadon‑main);
+  background:#fff;
+  border‑radius:20px;
+  padding:6px 12px;
+  font‑size:13px;
+  white‑space:nowrap;
+  cursor:pointer;
+}
+.quick‑btn:active{
+  background:var(--celadon‑pale);
+}
+.input‑area{
+  padding:12px 16px 22px;
+  background:#fff;
+  border‑top:1px solid var(--celadon‑pale);
+  flex‑shrink:0;
+}
+.row‑input{
+  display:flex;
+  gap:10px;
+  align‑items:center;
+}
+#userInput{
+  flex:1;
+  border:1px solid #ccc;
+  border‑radius:24px;
+  padding:11px 16px;
+  font‑size:16px;
+  outline:none;
+}
+#sendBtn{
+  background:var(--celadon‑main);
+  color:#fff;
+  border:none;
+  border‑radius:24px;
+  padding:11px 18px;
+  font‑size:15px;
+  cursor:pointer;
+}
+.tip‑note{
+  font‑size:11px;
+  color:#999;
+  margin‑top:8px;
+  text‑align:center;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div class="header">
+    <h1>耀州瓷 · 智能导览助手</h1>
+    <p>AI讲解员｜了解千年耀州青瓷</p >
+  </div>
+  <div class="chat‑box" id="chatBox">
+    <div class="msg msg‑bot">
+      <div class="bubble‑bot">
+        您好！欢迎来到耀州瓷数字展厅👋。我是智能导览讲解员，您可以提问耀州瓷相关知识，也可以点击下方快捷问题快速了解。
+      </div>
+    </div>
+    <div class="quick‑title">📌 点击快速提问</div>
+    <div class="quick‑wrap" id="quickWrap">
+    </div>
+  </div>
+  <div class="input‑area">
+    <div class="row‑input">
+      <input id="userInput" placeholder="输入你的问题..." />
+      <button id="sendBtn">发送</button>
+    </div>
+    <div class="tip‑note">提示：图片识别为AIGC图像识别模块概念演示</div>
+  </div>
+</div>
+
+<script>
+const qaLib = [
+  {q:"耀州窑在哪里？",a:"耀州窑遗址位于陕西省铜川市黄堡镇，唐宋时期这里窑炉连片，史书称作“十里窑场”，是北方规模最大的青瓷烧造中心。"},
+  {q:"耀州瓷是什么朝代最兴盛？",a:"耀州瓷在北宋达到鼎盛。北宋官府设立窑场烧制贡瓷；金代继续生产；元代之后逐步走向衰落。"},
+  {q:"耀州瓷主要是什么釉色？",a:"以青釉为主，橄榄青、豆青、粉青、天青都很典型。釉面温润透亮，玻璃质感较强，是北方青瓷代表。"},
+  {q:"耀州窑属于南窑还是北窑？",a:"耀州窑属于北方青瓷代表窑口，和南方越窑青瓷南北呼应，是宋代六大窑系之一。"},
+  {q:"什么是刻花工艺？",a:"耀州窑最标志性工艺就是刻花。在半干的坯体上用刀具刻划出花纹，上釉烧制，花纹凹凸起伏，釉色深浅变化，立体感很强。"},
+  {q:"耀州瓷常见纹样有哪些？",a:"常见有莲瓣纹、缠枝牡丹、海浪纹、卷草纹、菊纹、回纹，还有婴戏纹、鱼纹、凤纹等吉祥题材。"},
+  {q:"执壶是做什么用的？",a:"执壶是古代酒具或者水器，一边壶嘴出水，一边把手握持，唐宋贵族宴饮经常使用。"},
+  {q:"梅瓶用途是什么？",a:"梅瓶器型修长，主要用来储酒，小口不容易挥发美酒，宋代非常流行。"},
+  {q:"耀州瓷为什么能当贡瓷？",a:"北宋耀州窑工艺高超，刻花精美，釉色莹润，品质出众，被官府选中烧造贡瓷供宫廷使用。"},
+  {q:"耀州瓷和龙泉青瓷区别？",a:"耀州窑是北方，刻花犀利，釉偏橄榄青；龙泉窑在浙江南方，以厚釉粉青、梅子青见长，多模印，刻花风格柔和。"},
+  {q:"瓷枕用来干什么？",a:"古代瓷枕是夏日寝具，清凉降温，部分瓷枕也作为冥器，耀州窑瓷枕还会刻上人物故事纹样。"},
+  {q:"耀州窑有哪些典型器型？",a:"碗、盘、洗、玉壶春瓶、梅瓶、执壶、罐、瓷枕都是耀州窑高频出土器物。"},
+  {q:"婴戏纹代表什么含义？",a:"婴戏纹描绘孩童玩耍，寓意多子多福，家庭兴旺，是宋代很受欢迎吉祥装饰题材。"},
+  {q:"莲瓣纹有什么寓意？",a:"莲瓣纹源自佛教，象征清净圣洁，唐宋瓷器大量使用，层层莲瓣也寓意平安吉祥。"},
+  {q:"什么是十里窑场？",a:"铜川黄堡镇沿漆水河两岸，唐宋数公里遍布窑炉、作坊，古人形象称为十里窑场，规模宏大。"},
+  {q:"耀州窑烧造什么燃料？",a:"古代耀州窑主要烧煤炭，是较早大规模用煤烧瓷器的古代窑口。"},
+  {q:"耀州瓷有黑釉吗？",a:"有的，耀州窑除青瓷外，也烧制黑釉、酱釉器物，只是青瓷名气最大。"},
+  {q:"玉壶春瓶名字由来？",a:"玉壶春瓶是经典酒器，“玉壶”指代美酒，器型撇口、细颈、垂腹，线条柔和优雅。"},
+  {q:"耀州瓷会外销吗？",a:"唐宋耀州青瓷大量外销，出土文物证明远销西亚、东南亚，是古代海上丝绸之路重要商品。"},
+  {q:"怎么简单分辨耀州刻花？",a:"耀州刻花刀法刚劲犀利，线条深浅落差大，烧成后凹处积釉颜色更深，花纹立体生动。"},
+  {q:"耀州窑衰落原因是什么？",a:"金元战乱、原料枯竭、中心南迁等多重因素，元代黄堡镇窑场衰败，后期部分技艺转移到陈炉镇延续。"},
+  {q:"陈炉古镇和耀州窑关系？",a:"黄堡耀州窑衰败之后，陈炉镇继承制瓷技艺，延续至今，是活着的耀州窑活化石。"},
+  {q:"海浪纹寓意？",a:"海浪纹寓意江海安宁，也常和鱼组合，寓意年年有余。"},
+  {q:"回纹是什么？",a:"回纹是连续不断几何纹样，绵延往复，寓意福寿绵长，多用在器物口沿位置做边饰。"},
+  {q:"耀州瓷是官窑吗？",a:"耀州窑主体为民窑，北宋时期承担烧造贡瓷任务，但不属于严格意义的宋代五大官窑。"},
+  {q:"耀州窑出土文物在哪里看？",a:"铜川耀州窑博物馆收藏大量出土文物，各大省级博物馆也藏有精品耀州瓷。"},
+  {q:"耀州瓷的胎是什么颜色？",a:"耀州瓷胎多呈灰褐色，铁含量偏高，外部施青釉遮盖胎色。"},
+  {q:"耀州瓷有模印工艺吗？",a:"除刻花外，耀州窑也使用模印，把花纹模具压在坯体成型，适合大批量生产。"}
+];
+
+const quickQuestions = qaLib.map(i=>i.q);
+
+const chatBox = document.getElementById('chatBox');
+const quickWrap = document.getElementById('quickWrap');
+const userInput = document.getElementById('userInput');
+const sendBtn = document.getElementById('sendBtn');
+
+quickQuestions.forEach(q=>{
+  const btn = document.createElement('button');
+  btn.className = 'quick‑btn';
+  btn.innerText = q;
+  btn.onclick = ()=>sendQuestion(q);
+  quickWrap.appendChild(btn);
+})
+
+function addMessage(text,isUser){
+  const div = document.createElement('div');
+  div.className = 'msg '+(isUser?'msg‑user':'msg‑bot');
+  const bubble = document.createElement('div');
+  bubble.className = isUser?'bubble‑user':'bubble‑bot';
+  bubble.innerText = text;
+  div.appendChild(bubble);
+  chatBox.appendChild(div);
+  chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+function getAnswer(question){
+  const q = question.trim();
+  for(let item of qaLib){
+    if(q.includes(item.q)){
+      return item.a;
+    }
+  }
+  return "感谢提问，这个问题超出我的知识库。您可以试试问：耀州窑在哪里？刻花工艺是什么？梅瓶是干什么的等问题。";
+}
+
+function sendQuestion(text){
+  if(!text.trim()) return;
+  addMessage(text,true);
+  setTimeout(()=>{
+    const ans = getAnswer(text);
+    addMessage(ans,false);
+  },450);
+}
+
+sendBtn.onclick = ()=>{
+  sendQuestion(userInput.value);
+  userInput.value = '';
+}
+userInput.addEventListener('keydown',e=>{
+  if(e.key === 'Enter'){
+    sendQuestion(userInput.value);
+    userInput.value='';
+  }
+})
+</script>
+</body>
+</html>
